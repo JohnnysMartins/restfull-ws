@@ -1,9 +1,10 @@
+const sha1 = require('sha1');
 
 const usuario = function (deps) {
 	this.findAll = function () {
 		return new Promise((resolve, reject) => {
 			const { connection, errorHandler } = deps;
-			connection.query('select * from usuarios;', (error, results) => {
+			connection.query('select id, email from usuarios;', (error, results) => {
 				if (error) {
 					errorHandler(error, 'Erro ao listar usuarios', reject)
 					return false;
@@ -13,10 +14,10 @@ const usuario = function (deps) {
 		});
 	}
 
-	this.saveOne = function (email) {
+	this.saveOne = function (email, senha) {
 		return new Promise((resolve, reject) => {
 			const { connection, errorHandler } = deps;
-			connection.query('insert into usuarios (email) values (?)', [email], (error, results) => {
+			connection.query('insert into usuarios (email, senha) values (?, ?)', [email, sha1(senha)], (error, results) => {
 				if (error) {
 					console.log(error);
 					errorHandler(error, `Falha ao salvar o usuario ${email}`, reject)
@@ -27,16 +28,16 @@ const usuario = function (deps) {
 		});
 	}
 
-	this.updateOne = function (id, name) {
+	this.updateOne = function (id, senha) {
 		return new Promise((resolve, reject) => {
 			const { connection, errorHandler } = deps;
-			connection.query('update usuarios set name = ? where id = ?', [name, id], (error, results) => {
+			connection.query('update usuarios set senha = ? where id = ?', [sha1(senha), id], (error, results) => {
 				if (error || !results.affectedRows) {
-					errorHandler(error, `Falha ao atulizar a usuario ${name}`, reject)
+					errorHandler(error, `Falha ao atulizar a usuario de ${id}`, reject)
 					return false;
 				}
 				let number = results.affectedRows;
-				resolve({ number, name, msg: 'usuario atualizada com sucesso!' });
+				resolve({ number, id, msg: 'usuario atualizada com sucesso!' });
 			});
 		});
 	}
