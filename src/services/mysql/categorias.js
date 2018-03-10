@@ -30,11 +30,12 @@ const categoria = function (deps) {
 		return new Promise((resolve, reject) => {
 			const { connection, errorHandler } = deps;
 			connection.query('update categoria set name = ? where id = ?', [name, id], (error, results) => {
-				if (error) {
+				if (error || !results.affectedRows) {
 					errorHandler(error, `Falha ao atulizar a categoria ${name}`, reject)
 					return false;
 				}
-				resolve({ msg: 'Categoria atualizada com sucesso!' });
+				let number = results.affectedRows;
+				resolve({ number, name, msg: 'Categoria atualizada com sucesso!' });
 			});
 		});
 	}
@@ -43,11 +44,12 @@ const categoria = function (deps) {
 		return new Promise((resolve, reject) => {
 			const { connection, errorHandler } = deps;
 			connection.query('delete from categoria where id = ?', [id], (error, results) => {
-				if (error) {
+				if (error || !results.affectedRows) {
 					errorHandler(error, `Falha ao atulizar a categoria de ${id}`, reject)
 					return false;
 				}
-				resolve({ msg: 'Categoria excluida com sucesso!' });
+				let number = results.affectedRows;
+				resolve({ number, msg: 'Categoria excluida com sucesso!' });
 			});
 		});
 	}

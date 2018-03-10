@@ -1,23 +1,34 @@
 import test from 'ava';
-require('dotenv').config()
-const mysql = require('mysql');
-
-var connection = mysql.createConnection({
-	host: process.env.MYSQL_HOST,
-	user: process.env.MYSQL_USER,
-	password: process.env.MYSQL_PASSWORD,
-	database: process.env.MYSQL_TEST_DATABASE
-});
-
-const errorHandler = (error, msg, rejectFunction) => {
-	console.error(error);
-	rejectFunction({error: msg})
-}
+const { connection, errorHandler } = require('./setup')
 
 const categorias = require('../categorias')({ connection, errorHandler });
 
+const create = () => categorias.saveOne('categoria-teste');
+
+test.beforeEach(t => connection.query('TRUNCATE TABLE categoria'));
+
+test.after.always(t => connection.query('TRUNCATE TABLE categoria'));
+
+test('Listando as categorias', async (t) => {
+	await create();
+	const lista = await categorias.findAll();
+	t.is(lista.categorias.length, 1);
+});
+
 test('Criacao de categoria', async (t) => {
-	let nome = 'categoria-teste';
-	const result = await categorias.saveOne(nome);
-	t.is(result.name, nome)
+	const result = await create();
+	t.is(result.name, 'categoria-teste');
+});
+
+test('Atualizando uma categoria', async (t) => {
+	await create();
+	const updated = await categorias.updateOne(1, 'categoria-teste-updated');
+	t.is(updated.name, 'categoria-teste-updated');
+	t.is(updated.number, 1);
+});
+
+test('Deletando uma categoria', async (t) => {
+	await create();
+	const remove = await categorias.deleteById(1);
+	t.is(remove.number, 1);
 });
