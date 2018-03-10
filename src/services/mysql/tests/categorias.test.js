@@ -5,9 +5,9 @@ const categorias = require('../categorias')({ connection, errorHandler });
 
 const create = () => categorias.saveOne('categoria-teste');
 
-test.beforeEach(t => connection.query('TRUNCATE TABLE categoria'));
+test.beforeEach(t => connection.query('TRUNCATE TABLE categorias'));
 
-test.after.always(t => connection.query('TRUNCATE TABLE categoria'));
+test.after.always(t => connection.query('TRUNCATE TABLE categorias'));
 
 test('Listando as categorias', async (t) => {
 	await create();
