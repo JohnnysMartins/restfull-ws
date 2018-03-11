@@ -10,10 +10,10 @@ var connection = mysql.createConnection({
 
 const errorHandler = (error, msg, rejectFunction) => {
 	console.error(error);
-	rejectFunction({error: msg})
+	rejectFunction({ error: msg })
 }
 
 module.exports = {
-    connection,
-    errorHandler
+	connection,
+	errorHandler
 }
