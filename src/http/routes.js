@@ -1,6 +1,16 @@
 const db = require('../services/mysql/app');
 
 const routes = (server) => {
+	server.post('autenticacao', async (req, res, next) => {
+		try {
+			const { email, senha } = req.params;
+			res.send(await db.auth().anthenticate(email, senha));
+		} catch (error) {
+			res.send(error)
+		}
+		next()
+	});
+
 	server.get('categoria', async (req, res, next) => {
 		try {
 			res.send(await db.categorias().findAll());
@@ -8,7 +18,8 @@ const routes = (server) => {
 			res.send(error)
 		}
 		next()
-	})
+	});
+
 	server.post('categoria', async (req, res, next) => {
 		const { name } = req.params;
 		try {
@@ -17,7 +28,8 @@ const routes = (server) => {
 			res.send(error)
 		}
 		next()
-	})
+	});
+
 	server.post('categoria/update', async (req, res, next) => {
 		const { id, name } = req.params;
 		try {
@@ -26,7 +38,7 @@ const routes = (server) => {
 			res.send(error)
 		}
 		next()
-	})
+	});
 
 	server.post('categoria/delete', async (req, res, next) => {
 		const { id } = req.params;
@@ -36,7 +48,7 @@ const routes = (server) => {
 			res.send(error)
 		}
 		next()
-	})
+	});
 };
 
 module.exports = routes;
