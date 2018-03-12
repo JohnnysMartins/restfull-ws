@@ -5,7 +5,6 @@ const usuario = function (deps) {
 		findAll: () => {
 			return new Promise((resolve, reject) => {
 				const { connection, errorHandler } = deps;
-				console.log('Cheguei em usuario');
 				connection.query('select id, email from usuarios;', (error, results) => {
 					if (error) {
 						errorHandler(error, 'Erro ao listar usuarios', reject)

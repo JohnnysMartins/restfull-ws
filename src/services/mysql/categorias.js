@@ -4,8 +4,6 @@ const categoria = function (deps) {
 		findAll: () => {
 			return new Promise((resolve, reject) => {
 				const { connection, errorHandler } = deps;
-				console.log('Cheguei em categorias');
-
 				connection.query('select * from categorias;', (error, results) => {
 					if (error) {
 						errorHandler(error, 'Erro ao listar categorias', reject)
