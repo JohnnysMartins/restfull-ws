@@ -23,7 +23,7 @@ test('Criacao de usuario', async (t) => {
 
 test('Atualizando um usuario', async (t) => {
 	await create();
-	const updated = await usuarios.updateOne(1, 'nova-senha-teste');
+	const updated = await usuarios.updateOne(1, 'senha-teste');
 	t.is(updated.id, 1);
 	t.is(updated.number, 1);
 });

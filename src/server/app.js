@@ -6,6 +6,10 @@ const cors = require('./cors')
 server.pre(cors.preflight)
 server.use(cors.actual)
 server.use(restify.plugins.bodyParser())
+server.use((req, resp, next) => {
+	console.log('Ta passando por aqui')
+	next()
+});
 
 routes(server);
 

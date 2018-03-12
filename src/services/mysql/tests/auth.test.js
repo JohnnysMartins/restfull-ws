@@ -16,3 +16,10 @@ test('Login de usuario - sucesso', async (t) => {
 	t.not(result.token, null);
 	t.not(result.token.length, 0);
 });
+
+test('Login de usuario - falha', async (t) => {
+	await create();
+	const promise = auth.anthenticate('usuario1@teste.com', '1234');
+	const error = await t.throws(promise);
+	t.is(error.error, 'Erro ao Autenticar o usuario');
+});
