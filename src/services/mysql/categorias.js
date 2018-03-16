@@ -14,6 +14,11 @@ const categoria = function (deps) {
 			});
 		},
 
+		find: (callback) => {
+			const { connection } = deps;
+			connection.query('select * from categorias;', callback);
+		},
+
 		saveOne: (name) => {
 			return new Promise((resolve, reject) => {
 				const { connection, errorHandler } = deps;

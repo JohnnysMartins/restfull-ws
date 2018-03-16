@@ -3,7 +3,7 @@ const server = restify.createServer();
 const routes = require('../http/routes');
 const cors = require('./cors')
 const jwtMiddleware = require('./jwtMiddleware');
-const exclusions = ['/autenticacao/'];
+const exclusions = ['/autenticacao', '/usuario/cadastrar'];
 
 server.pre(cors.preflight)
 server.use(cors.actual)

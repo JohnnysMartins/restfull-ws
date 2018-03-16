@@ -11,6 +11,16 @@ const routes = (server) => {
 		next()
 	});
 
+	server.post('usuario/cadastrar', async (req, res, next) => {
+		try {
+			const { email, senha } = req.params;
+			res.send(await db.usuarios().saveOne(email, senha));
+		} catch (error) {
+			res.send(error)
+		}
+		next()
+	});
+
 	server.get('categoria', async (req, res, next) => {
 		try {
 			res.send(await db.categorias().findAll());
@@ -19,6 +29,18 @@ const routes = (server) => {
 		}
 		next()
 	});
+
+	server.get('categorias', (req, res, next) => {
+		db.categorias().find((err, result) => {
+			if (err) {
+				res.send('Erro ao listar categorias');
+				console.error(err);
+				return;
+			}
+			res.send({ msg: 'agora sim', categorias: result });
+		});
+		next()
+	})
 
 	server.post('categoria', async (req, res, next) => {
 		const { name } = req.params;
